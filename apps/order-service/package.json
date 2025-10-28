@@ -18,6 +18,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@clerk/fastify": "2.5.0-canary.v20251026194813",
     "fastify": "^5.6.1"
   }
 }

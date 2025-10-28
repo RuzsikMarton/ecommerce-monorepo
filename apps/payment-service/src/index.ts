@@ -1,9 +1,11 @@
 import { serve } from "@hono/node-server";
-import { time, timeStamp } from "console";
 import { Hono } from "hono";
-import { uptime } from "process";
+import { clerkMiddleware } from '@hono/clerk-auth'
+import { userAuthMiddleware } from "./middleware/authMiddleware.js";
+
 
 const app = new Hono();
+app.use('*', clerkMiddleware());
 
 app.get("/health", (c) => {
   return c.json({
@@ -12,6 +14,12 @@ app.get("/health", (c) => {
     timestamp: Date.now(),
   });
 });
+
+app.get('/test', userAuthMiddleware,  (c) => {
+  return c.json({
+    message: 'Payment service authenticated!', userId: c.get("userId")
+  })
+})
 
 const start = async () => {
   try {
