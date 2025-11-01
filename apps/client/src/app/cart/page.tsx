@@ -63,7 +63,7 @@ const CartPage = () => {
                   <div className="flex gap-8">
                     <div className="relative w-32 h-32 bg-gray-50 rounded-lg overflow-hidden">
                       <Image
-                        src={item.images?.[item.selectedColor] || ""}
+                        src={(item.images as Record<string, string>)?.[item.selectedColor] || ""}
                         alt={item.name}
                         fill
                         className="object-contain"

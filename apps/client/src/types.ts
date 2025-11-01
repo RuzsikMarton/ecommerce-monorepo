@@ -1,26 +1,5 @@
 import { z } from "zod";
 
-export interface Products {
-  id: string | number;
-  name: string;
-  shortDescription: string;
-  description: string;
-  price: number;
-  sizes?: string[];
-  colors: [string, ...string[]];
-  images: Record<string, string>;
-}
-
-export type ProductsType = Products[];
-
-export interface CartItems extends Products {
-  quantity: number;
-  selectedSize?: string | null;
-  selectedColor: string;
-}
-
-export type CartItemsType = CartItems[];
-
 export const shippingFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z
@@ -62,14 +41,3 @@ export const paymentFormSchema = z.object({
 });
 
 export type paymentFormInputs = z.infer<typeof paymentFormSchema>;
-
-export type CartStoreStateType = {
-  cart: CartItemsType;
-  hasHydrated: boolean;
-};
-
-export type CartStoreActionsType = {
-  addtoCart: (product: CartItems) => void;
-  removeFromCart: (product: CartItems) => void;
-  clearCart: () => void;
-};

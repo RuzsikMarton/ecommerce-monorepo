@@ -1,8 +1,8 @@
 import ProductInteractions from "@/components/ProductInteractions";
-import { Products } from "@/types";
+import { ProductType } from "@repo/types";
 import Image from "next/image";
 
-const product: Products = {
+const product: ProductType = {
   id: 1,
   name: "Adidas CoreFit T-Shirt",
   shortDescription:
@@ -17,6 +17,9 @@ const product: Products = {
     purple: "/products/1p.png",
     green: "/products/1gr.png",
   },
+  categorySlug: "t-shirts",
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 export const generateMetadata = async ({params} : {params:{id:string}}) => {
@@ -44,7 +47,7 @@ const ProductPage = async ({
         {/*Image*/}
         <div className="w-full lg:w-5/12 aspect-[2/3] relative">
           <Image
-            src={product.images?.[selectedColor] || ""}
+            src={(product.images as Record<string, string>)?.[selectedColor] || ""}
             alt={product.name}
             fill
             className="object-contain rounded-md"

@@ -1,11 +1,11 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { clerkMiddleware } from '@hono/clerk-auth'
+import { clerkMiddleware } from "@hono/clerk-auth";
 import { userAuthMiddleware } from "./middleware/authMiddleware.js";
-
+import stripe from "./utils/stripe.js";
 
 const app = new Hono();
-app.use('*', clerkMiddleware());
+app.use("*", clerkMiddleware());
 
 app.get("/health", (c) => {
   return c.json({
@@ -15,11 +15,13 @@ app.get("/health", (c) => {
   });
 });
 
-app.get('/test', userAuthMiddleware,  (c) => {
+app.get("/test", userAuthMiddleware, (c) => {
   return c.json({
-    message: 'Payment service authenticated!', userId: c.get("userId")
-  })
-})
+    message: "Payment service authenticated!",
+    userId: c.get("userId"),
+  });
+});
+
 
 const start = async () => {
   try {

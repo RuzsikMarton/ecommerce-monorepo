@@ -1,7 +1,7 @@
 "use client";
 
 import useCartStore from "@/store/cartStore";
-import { Products } from "@/types";
+import { ProductType } from "@repo/types";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -12,8 +12,8 @@ const ProductInteractions = ({
   selectedSize,
   selectedColor,
 }: {
-  product: Products;
-  selectedSize: string | null;
+  product: ProductType;
+  selectedSize: string | undefined;
   selectedColor: string;
 }) => {
   const router = useRouter();

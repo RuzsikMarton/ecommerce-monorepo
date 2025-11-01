@@ -1,6 +1,6 @@
 "use client";
 
-import { Products } from "@/types";
+import { ProductType } from "@repo/types";
 import { ShoppingCartIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,10 +8,10 @@ import { useState, memo } from "react";
 import useCartStore from "@/store/cartStore";
 import { toast } from "react-toastify";
 
-const ProductCard = memo(({ product }: { product: Products }) => {
+const ProductCard = memo(({ product }: { product: ProductType }) => {
   const [productTypes, setProductTypes] = useState({
-    size: product.sizes ? product.sizes[0] : null,
-    color: product.colors[0],
+    size: product.sizes ? product.sizes[0] : undefined,
+    color: product.colors[0]!,
   });
 
   const { addtoCart } = useCartStore();
@@ -39,7 +39,7 @@ const ProductCard = memo(({ product }: { product: Products }) => {
       <Link href={`/products/${product.id}`}>
         <div className="relative aspect-[2/3] hover:scale-105 transition-transform duration-300">
           <Image
-            src={product.images?.[productTypes.color] || ""}
+            src={(product.images as Record<string, string>)?.[productTypes.color] || ""}
             alt=""
             fill
             className="object-cover"
