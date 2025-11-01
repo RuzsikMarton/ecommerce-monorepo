@@ -1,7 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import { userAuthMiddleware } from "./middleware/authMiddleware.js";
+import productRouter from "./routes/product.route.js";
+import categoryRouter from "./routes/category.route.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -23,9 +25,25 @@ app.get("/health", (req: Request, res: Response) => {
   });
 });
 
-
-app.get("/test", userAuthMiddleware , (req: Request, res: Response) => {
+app.get("/test", userAuthMiddleware, (req: Request, res: Response) => {
   res.json({ message: "Products service authenticated!", userId: req.userId });
+});
+
+app.use("/products", productRouter);
+app.use("/categories", categoryRouter);
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const status = err.status || 500;
+  const message = err.message || "Internal Server Error";
+  if (process.env.NODE_ENV !== "production") console.error(err);
+  res
+    .status(status)
+    .json({
+      success: false,
+      message,
+      stack: process.env.NODE_ENV === "production" ? null : err.stack,
+    });
+  return;
 });
 
 app.listen(PORT, () => {
