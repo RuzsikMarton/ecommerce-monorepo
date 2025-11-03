@@ -22,8 +22,8 @@ const Footer = () => {
       </div>
       <div className="flex flex-col gap-4 text-sm items-center md:items-start">
         <p className="text-amber-50">Products</p>
-        <Link href={"/"}>All Products</Link>
-        <Link href={"/"}>New Arrivals</Link>
+        <Link href={"/products"}>All Products</Link>
+        <Link href={"/products?sort=newest"}>New Arrivals</Link>
         <Link href={"/"}>Sale</Link>
       </div>
       <div className="flex flex-col gap-4 text-sm items-center md:items-start">

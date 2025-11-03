@@ -58,7 +58,7 @@ const ProductInteractions = ({
           <div className="flex items-center gap-2">
             {product.sizes.map((size) => (
               <div
-                className={`cursor-pointer border-1 p-[2px] ${
+                className={`cursor-pointer border p-0.5 ${
                   size === selectedSize ? "border-gray-600" : "border-gray-300"
                 }`}
                 key={size}
@@ -85,7 +85,7 @@ const ProductInteractions = ({
           {product.colors.map((color) => (
             <div
               key={color}
-              className={`flex items-center justify-center cursor-pointer border-1 p-[2px] ${
+              className={`flex items-center justify-center cursor-pointer border p-0.5 ${
                 color === selectedColor ? "border-gray-600" : "border-gray-300"
               }`}
               onClick={() => handleTypeChange("color", color)}
@@ -99,11 +99,11 @@ const ProductInteractions = ({
       <div className="flex flex-col gap-2 text-sm">
         <span className="text-gray-500">Quantity:</span>
         <div className="flex items-center font-semibold">
-          <button onClick={() => handleQuantityChange("decrement")} className="flex items-center justify-center border-1 p-1 border-gray-300 cursor-pointer">
+          <button onClick={() => handleQuantityChange("decrement")} className="flex items-center justify-center border p-1 border-gray-300 cursor-pointer">
             <Minus className="w-4 h-4" />
           </button>
           <span className="w-8 flex justify-center">{quantity}</span>
-          <button onClick={() => handleQuantityChange("increment")} className="flex items-center justify-center border-1 p-1 border-gray-300 cursor-pointer">
+          <button onClick={() => handleQuantityChange("increment")} className="flex items-center justify-center border p-1 border-gray-300 cursor-pointer">
             <Plus className="w-4 h-4" />
           </button>
         </div>

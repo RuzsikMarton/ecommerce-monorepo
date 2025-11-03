@@ -37,7 +37,7 @@ const ProductCard = memo(({ product }: { product: ProductType }) => {
     <div className="shadow-lg rounde-lg overflow-hidden">
       {/* Image Section */}
       <Link href={`/products/${product.id}`}>
-        <div className="relative aspect-[2/3] hover:scale-105 transition-transform duration-300">
+        <div className="relative aspect-2/3 hover:scale-105 transition-transform duration-300">
           <Image
             src={(product.images as Record<string, string>)?.[productTypes.color] || ""}
             alt=""
@@ -85,7 +85,7 @@ const ProductCard = memo(({ product }: { product: ProductType }) => {
                   }`}
                 >
                   <div
-                    className="rounded-full h-[14px] w-[14px]"
+                    className="rounded-full h-3.5 w-3.5"
                     style={{ background: color }}
                   ></div>
                 </div>

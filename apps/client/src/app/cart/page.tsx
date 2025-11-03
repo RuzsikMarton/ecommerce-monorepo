@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import PaymentForm from "@/components/PaymentForm";
 import ShippingForm from "@/components/ShippingForm";
 import { shippingFormInputs } from "@/types";
 import { ArrowRight, Trash2 } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 import useCartStore from "@/store/cartStore";
+import StripePaymentForm from "@/components/StripePaymentForm";
 
 const steps = [
   { id: 1, title: "Shopping Cart" },
@@ -52,7 +52,7 @@ const CartPage = () => {
         {/* Content */}
         <div className="w-full flex flex-col lg:flex-row gap-12">
           {/* Steps */}
-          <div className="w-full lg:w-7/12 shadow-lg border-1 border-gray-200 p-6 rounded-lg flex flex-col gap-8">
+          <div className="w-full lg:w-7/12 shadow-lg border border-gray-200 p-6 rounded-lg flex flex-col gap-8">
             {activeStep === 1 ? (
               cart.map((item) => (
                 <div
@@ -90,7 +90,7 @@ const CartPage = () => {
             ) : activeStep === 2 ? (
               <ShippingForm setShippingForm={setShippingForm}/>
             ) : activeStep === 3 && shippingForm ? (
-              <PaymentForm />
+              <StripePaymentForm shippingForm={shippingForm}/>
             ) : (
               <p className="text-sm text-red-400">
                 Please fill in the shipping form to continue!
@@ -98,7 +98,7 @@ const CartPage = () => {
             )}
           </div>
           {/* Summary */}
-          <div className="w-full lg:w-5/12 shadow-lg border-1 border-gray-200 p-6 rounded-lg flex flex-col gap-8 h-max">
+          <div className="w-full lg:w-5/12 shadow-lg border border-gray-200 p-6 rounded-lg flex flex-col gap-8 h-max">
             <h2 className="font-semibold">Cart Details</h2>
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between text-sm">

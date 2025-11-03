@@ -45,7 +45,7 @@ const ProductPage = async ({
     <div className="mx-auto p-4 sm:px-0 sm:max-w-xl md:max-w-2xl lg:max-w-5xl xl:max-w-7xl">
       <div className="flex flex-col lg:flex-row justify-between gap-4 md:gap-12 mt-12">
         {/*Image*/}
-        <div className="w-full lg:w-5/12 aspect-[2/3] relative">
+        <div className="w-full lg:w-5/12 aspect-2/3 relative">
           <Image
             src={(product.images as Record<string, string>)?.[selectedColor] || ""}
             alt={product.name}
