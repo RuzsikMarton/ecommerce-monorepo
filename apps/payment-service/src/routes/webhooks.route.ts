@@ -34,3 +34,5 @@ webhookRoute.post("/stripe", async (c) => {
   }
   return c.json({ received: true });
 });
+
+export default webhookRoute;

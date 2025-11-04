@@ -3,9 +3,10 @@ import { clerkPlugin } from "@clerk/fastify";
 import { userAuthMiddleware } from "./middleware/authMiddleware.js";
 import { connectToDatabase } from "@repo/order-db";
 import { orderRoutes } from "./routes/order.js";
+import { consumer, producer } from "./utils/kafka.js";
 
 const app = fastify();
-app.register(clerkPlugin)
+app.register(clerkPlugin);
 
 app.get("/health", (request, reply) => {
   return reply.status(200).send({
@@ -15,16 +16,22 @@ app.get("/health", (request, reply) => {
   });
 });
 
-app.get("/test", {preHandler: userAuthMiddleware}, (request, reply) => {
-  return reply.send({ message: "Order service authenticated!", userId: request.userId });
+app.get("/test", { preHandler: userAuthMiddleware }, (request, reply) => {
+  return reply.send({
+    message: "Order service authenticated!",
+    userId: request.userId,
+  });
 });
 
 app.register(orderRoutes);
-  
 
 const start = async () => {
   try {
-    await connectToDatabase();
+    await Promise.all([
+      connectToDatabase(),
+      producer.connect(),
+      consumer.connect(),
+    ]);
     await app.listen({ port: 8001 });
     console.log("Order service is running on port 8001");
   } catch (err) {

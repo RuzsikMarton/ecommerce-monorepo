@@ -4,10 +4,15 @@ import { clerkMiddleware } from "@hono/clerk-auth";
 import { userAuthMiddleware } from "./middleware/authMiddleware.js";
 import sessionRoute from "./routes/session.route.js";
 import { cors } from "hono/cors";
+import webhookRoute from "./routes/webhooks.route.js";
+import { consumer, producer } from "./utils/kafka.js";
 
 const app = new Hono();
 app.use("*", clerkMiddleware());
-app.use("*", cors({origin: [process.env.CLIENT_URL || "http://localhost:3002"]}));
+app.use(
+  "*",
+  cors({ origin: [process.env.CLIENT_URL || "http://localhost:3002"] })
+);
 
 app.get("/health", (c) => {
   return c.json({
@@ -25,9 +30,11 @@ app.get("/test", userAuthMiddleware, (c) => {
 });
 
 app.route("/session", sessionRoute);
+app.route("/webhooks", webhookRoute);
 
 const start = async () => {
   try {
+    await Promise.all([producer.connect(), consumer.connect()]);
     serve(
       {
         fetch: app.fetch,

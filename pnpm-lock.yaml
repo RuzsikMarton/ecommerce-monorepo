@@ -205,6 +205,9 @@ importers:
       '@clerk/fastify':
         specifier: 2.5.0-canary.v20251026194813
         version: 2.5.0-canary.v20251026194813(fastify@5.6.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@repo/kafka':
+        specifier: workspace:*
+        version: link:../../packages/kafka
       '@repo/order-db':
         specifier: workspace:*
         version: link:../../packages/order-db
@@ -236,6 +239,9 @@ importers:
       '@hono/node-server':
         specifier: ^1.19.5
         version: 1.19.5(hono@4.10.3)
+      '@repo/kafka':
+        specifier: workspace:*
+        version: link:../../packages/kafka
       hono:
         specifier: ^4.10.3
         version: 4.10.3
@@ -264,6 +270,9 @@ importers:
       '@clerk/express':
         specifier: ^1.7.42
         version: 1.7.42(express@5.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@repo/kafka':
+        specifier: workspace:*
+        version: link:../../packages/kafka
       '@repo/product-db':
         specifier: workspace:*
         version: link:../../packages/product-db
@@ -322,6 +331,19 @@ importers:
       typescript-eslint:
         specifier: ^8.40.0
         version: 8.40.0(eslint@9.38.0(jiti@2.6.1))(typescript@5.9.2)
+
+  packages/kafka:
+    dependencies:
+      kafkajs:
+        specifier: ^2.2.4
+        version: 2.2.4
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^24.10.0
+        version: 24.10.0
 
   packages/order-db:
     dependencies:
@@ -1636,6 +1658,9 @@ packages:
   '@types/node@20.19.23':
     resolution: {integrity: sha512-yIdlVVVHXpmqRhtyovZAcSy0MiPcYWGkoO4CGe/+jpP0hmNuihm4XhHbADpK++MsiLHP5MVlv+bcgdF99kSiFQ==}
 
+  '@types/node@24.10.0':
+    resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
+
   '@types/node@24.9.2':
     resolution: {integrity: sha512-uWN8YqxXxqFMX2RqGOrumsKeti4LlmIMIyV0lgut4jx7KQBcBiW6vkDtIBvHnHIquwNfJhk8v2OtmO8zXWHfPA==}
 
@@ -2593,6 +2618,10 @@ packages:
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
+
+  kafkajs@2.2.4:
+    resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
+    engines: {node: '>=14.0.0'}
 
   kareem@2.6.3:
     resolution: {integrity: sha512-C3iHfuGUXK2u8/ipq9LfjFfXFxAZMQJJq7vLS45r3D9Y2xQ/m4S8zaR4zMLFWh9AsNPXmcFfUDhTEO8UIC/V6Q==}
@@ -4727,6 +4756,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@24.10.0':
+    dependencies:
+      undici-types: 7.16.0
+
   '@types/node@24.9.2':
     dependencies:
       undici-types: 7.16.0
@@ -5918,6 +5951,8 @@ snapshots:
       array.prototype.flat: 1.3.3
       object.assign: 4.1.7
       object.values: 1.2.1
+
+  kafkajs@2.2.4: {}
 
   kareem@2.6.3: {}
 

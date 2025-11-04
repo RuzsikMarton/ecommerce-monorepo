@@ -14,6 +14,7 @@ sessionRoute.post("/create-checkout-session", userAuthMiddleware, async (c) => {
   const lineItems = await Promise.all(
     cart.map( async (item : any) => {
       const unitAmount = await getStripeProductPrice(item.id);
+      console.log(item)
       return {
         price_data: {
             currency: "eur",

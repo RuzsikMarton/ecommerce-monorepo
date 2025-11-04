@@ -4,7 +4,7 @@ import stripe from "./stripe";
 export const createStripeProduct = async (item: StripeProductType) => {
   try {
     const res = await stripe.products.create({
-      id: item.id,
+      id: item.id.toString(),
       name: item.name,
       default_price_data: {
         currency: "eur",
@@ -22,7 +22,7 @@ export const createStripeProduct = async (item: StripeProductType) => {
 export const getStripeProductPrice = async (productId: number) => {
   try {
     const prices = await stripe.prices.list({
-    product: "123",
+    product: productId.toString(),
   });
 
   return prices.data[0]?.unit_amount;
