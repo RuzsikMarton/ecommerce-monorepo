@@ -14,7 +14,6 @@ sessionRoute.post("/create-checkout-session", userAuthMiddleware, async (c) => {
   const lineItems = await Promise.all(
     cart.map( async (item : any) => {
       const unitAmount = await getStripeProductPrice(item.id);
-      console.log(item)
       return {
         price_data: {
             currency: "eur",
@@ -35,6 +34,9 @@ sessionRoute.post("/create-checkout-session", userAuthMiddleware, async (c) => {
       mode: "payment",
       ui_mode: "custom",
       return_url: `${clientURL}/return?session_id={CHECKOUT_SESSION_ID}`,
+      shipping_address_collection: {
+        allowed_countries: ['SK', 'CZ', 'HU', 'PL', 'AT', 'DE', 'US', 'GB'], 
+      },
     });
 
     if (!session.client_secret) {

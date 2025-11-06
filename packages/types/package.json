@@ -9,6 +9,7 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@repo/product-db": "workspace:*",
+    "@repo/order-db": "workspace:*",
     "@types/node": "^24.9.2"
   },
   "exports": {

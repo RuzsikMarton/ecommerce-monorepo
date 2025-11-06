@@ -13,6 +13,12 @@ const OrderSchema = new Schema(
     userId: { type: String, required: true },
     email: { type: String, required: true },
     amount: { type: Number, required: true },
+    shippingAddress: {
+      line1: { type: String, required: true },
+      city: { type: String, required: true },
+      postal_code: { type: String, required: true },
+      country: { type: String, required: true },
+      },
     status: { type: String, required: true, enum: orderStatuses },
     products: {
       type: [
