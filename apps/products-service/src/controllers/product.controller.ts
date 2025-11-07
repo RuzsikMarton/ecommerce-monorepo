@@ -70,13 +70,21 @@ export const getProducts = async (req: Request, res: Response) => {
 
   const products = await prisma.product.findMany({
     where: {
-      category: {
-        slug: category as string,
-      },
-      name: {
-        contains: search as string,
-        mode: "insensitive",
-      },
+      ...(category && category !== "all"
+        ? {
+            category: {
+              slug: category as string,
+            },
+          }
+        : {}),
+      ...(search
+        ? {
+            name: {
+              contains: search as string,
+              mode: "insensitive",
+            },
+          }
+        : {}),
     },
     orderBy,
     take: limit ? Number(limit) : undefined,

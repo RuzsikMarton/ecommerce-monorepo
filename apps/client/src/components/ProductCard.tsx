@@ -52,7 +52,7 @@ const ProductCard = memo(({ product }: { product: ProductType }) => {
         <p className="text-sm text-gray-500">{product.shortDescription}</p>
         {/*Product Types */}
         <div className="flex items-start gap-6 text-xs">
-          {product.sizes ? (
+          {product.sizes.length ? (
             <div className="flex flex-col gap-1">
               <span className="text-gray-500">Sizes</span>
               <select

@@ -77,7 +77,7 @@ const CartPage = () => {
                         <p className="text-xs text-gray-500">Color: {item.selectedColor}</p>
                       </div>
                       <p className="text-gray-800 font-medium">
-                        {item.price.toFixed(2)}
+                        {(item.price * item.quantity).toFixed(2)}€
                       </p>
                     </div>
                   </div>

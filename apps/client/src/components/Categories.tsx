@@ -9,7 +9,7 @@ const categories = [
   {
     name: "All",
     icon: <ShoppingBasket className="w-4 h-4" />,
-    slug: "all",
+    slug: "",
   },
   {
     name: "Watches",
@@ -33,11 +33,11 @@ const Categories = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const selectedCategory = searchParams.get("category") || "all";
+  const selectedCategory = searchParams.get("category") || "";
 
   const handleChange = (category: string | null) => {
     const params = new URLSearchParams(searchParams);
-    params.set("category", category || "all");
+    params.set("category", category || "");
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   }
 

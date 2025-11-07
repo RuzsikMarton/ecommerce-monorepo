@@ -2,32 +2,24 @@ import ProductInteractions from "@/components/ProductInteractions";
 import { ProductType } from "@repo/types";
 import Image from "next/image";
 
-const product: ProductType = {
-  id: 1,
-  name: "Adidas CoreFit T-Shirt",
-  shortDescription:
-    "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-  description:
-    "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-  price: 39.9,
-  sizes: ["s", "m", "l", "xl", "xxl"],
-  colors: ["gray", "purple", "green"],
-  images: {
-    gray: "/products/1g.png",
-    purple: "/products/1p.png",
-    green: "/products/1gr.png",
-  },
-  categorySlug: "t-shirts",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
+  const product = await fethProduct(id);
 
-export const generateMetadata = async ({params} : {params:{id:string}}) => {
-  //todo: get data from db or api
   return {
     title: product.name,
     description: product.shortDescription,
   };
+};
+
+const fethProduct = async (id: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products/${id}`);
+  const data: {product : ProductType} = await res.json();
+  return data.product;
 };
 
 const ProductPage = async ({
@@ -37,17 +29,21 @@ const ProductPage = async ({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ color: string; size?: string }>;
 }) => {
-  const {size, color} = await searchParams;
+  const { size, color } = await searchParams;
+  const { id } = await params;
+  const product = await fethProduct(id);
 
   const selectedSize = product.sizes?.length ? size || product.sizes[0] : null;
-  const selectedColor = color || "gray";
+  const selectedColor = color || product.colors[0] as string;
   return (
     <div className="mx-auto p-4 sm:px-0 sm:max-w-xl md:max-w-2xl lg:max-w-5xl xl:max-w-7xl">
       <div className="flex flex-col lg:flex-row justify-between gap-4 md:gap-12 mt-12">
         {/*Image*/}
         <div className="w-full lg:w-5/12 aspect-2/3 relative">
           <Image
-            src={(product.images as Record<string, string>)?.[selectedColor] || ""}
+            src={
+              (product.images as Record<string, string>)?.[selectedColor] || ""
+            }
             alt={product.name}
             fill
             className="object-contain rounded-md"
