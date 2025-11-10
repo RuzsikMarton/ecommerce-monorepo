@@ -14,17 +14,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
+import { OrderType } from "@repo/types";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  fullname: string;
-  userId: string;
-  email: string;
-  status: "pending" | "success" | "failed" | "refund";
-};
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<OrderType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -46,12 +38,8 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "id",
+    accessorKey: "_id",
     header: "ID",
-  },
-  {
-    accessorKey: "fullname",
-    header: "Full name",
   },
   {
     accessorKey: "email",
@@ -77,7 +65,7 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as Payment["status"];
+      const status = row.getValue("status") as OrderType["status"];
 
       return (
         <div
@@ -110,7 +98,7 @@ export const columns: ColumnDef<Payment>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const order = row.original;
 
       return (
         <div className="flex items-center justify-end">
@@ -124,12 +112,12 @@ export const columns: ColumnDef<Payment>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
+                onClick={() => navigator.clipboard.writeText(order._id)}
               >
                 Copy payment ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><Link  href={`/users/${payment.userId}`}>View customer</Link></DropdownMenuItem>
+              <DropdownMenuItem><Link  href={`/users/${order.userId}`}>View customer</Link></DropdownMenuItem>
               <DropdownMenuItem>View payment details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -15,14 +15,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-export type User = {
-  id: string;
-  avatar: string;
-  fullName: string;
-  email: string;
-  status: "active" | "inactive" | "admin";
-};
+import { User } from "@clerk/nextjs/server";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -53,17 +46,26 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "avatar",
     header: "Avatar",
     cell: ({ row }) => {
-      const avatar = row.getValue("avatar") as User["avatar"];
+      const user = row.original;
       return (
         <div className="relative w-9 h-9">
-          <Image src={avatar} alt="Avatar" fill className="rounded object-cover" />
+          <Image
+            src={user.imageUrl}
+            alt={user.firstName || user.username || "-"}
+            fill
+            className="rounded object-cover"
+          />
         </div>
-      )
+      );
     },
   },
   {
-    accessorKey: "fullName",
-    header: "Full name",
+    accessorKey: "firstName",
+    header: "User",
+    cell: ({ row }) => {
+      const user = row.original;
+      return <div className="">{user.firstName || user.username || "-"}</div>;
+    },
   },
   {
     accessorKey: "email",
@@ -84,20 +86,24 @@ export const columns: ColumnDef<User>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const user = row.original;
+      return <div className="">{user.emailAddresses[0]?.emailAddress}</div>;
+    }
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as User["status"];
+      const user = row.original;
+      const status = user.banned ? "inactive" : "active";
 
       return (
         <div
           className={cn(
             `p-1 rounded-md w-max text-xs`,
             status === "active" && "bg-green-500/40",
-            status === "inactive" && "bg-red-500/40",
-            status === "admin" && "bg-blue-500/40"
+            status === "inactive" && "bg-red-500/40"
           )}
         >
           {status}
@@ -127,7 +133,9 @@ export const columns: ColumnDef<User>[] = [
                 Copy user ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><Link  href={`/users/${user.id}`}>View customer</Link></DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={`/users/${user.id}`}>View customer</Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
