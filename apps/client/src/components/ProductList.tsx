@@ -18,8 +18,8 @@ const fetchData = async ({
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products?${category ? `category=${category}` : ""}${search ? `&search=${search}` : ""}&sort=${sort || "newest"}${params === "homepage" ? "&limit=8" : ""}`
   );
-  const data: { products: ProductsType } = await res.json();
-  return data.products;
+  const data: ProductsType  = await res.json();
+  return data;
 };
 
 const ProductList = async ({

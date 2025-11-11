@@ -7,7 +7,6 @@ export const createConsumer = (kafka: Kafka, groupId: string) => {
 
   const connect = async () => {
     await consumer.connect();
-    console.log(`Consumer connected with groupId: ${groupId}`);
   };
 
   const subscribe = async (

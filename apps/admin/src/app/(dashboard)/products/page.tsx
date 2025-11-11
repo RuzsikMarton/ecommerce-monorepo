@@ -16,7 +16,7 @@ const getData = async (): Promise<{ data: ProductsType; error?: string }> => {
     }
 
     const response = await res.json();
-    return { data: response.products || [] };
+    return { data: response || [] };
   } catch (error) {
     console.error("Failed to fetch products:", error);
     return {
