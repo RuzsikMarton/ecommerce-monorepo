@@ -10,6 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAuth } from "@clerk/nextjs";
+import { User } from "@clerk/nextjs/server";
+import { useMutation } from "@tanstack/react-query";
 import {
   ColumnDef,
   flexRender,
@@ -20,7 +23,9 @@ import {
   getSortedRowModel,
 } from "@tanstack/react-table";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -45,16 +50,52 @@ export function DataTable<TData, TValue>({
     state: { sorting, rowSelection },
   });
 
+  const { getToken } = useAuth();
+  const router = useRouter()
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const token = await getToken();
+      const selectedRow = table.getSelectedRowModel().rows;
+      await Promise.all(
+        selectedRow.map(async (row) => {
+          const userId = (row.original as User).id;
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_AUTH_SERVICE_URL}/users/${userId}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (!res.ok) {
+            throw new Error(`Failed to delete user ${userId}`);
+          }
+          return res.json();
+        })
+      );
+    },
+    onSuccess: () => {
+      toast.success("User(s) deleted successfully");
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error(error?.message || "Something went wrong");
+    },
+  });
+
   return (
     <div>
       <div className="rounded-md border overflow-hidden">
         <div className="flex justify-end mt-2 mr-2">
           <Button
-            disabled={Object.keys(rowSelection).length > 0 ? false : true}
+            disabled={mutation.isPending || Object.keys(rowSelection).length > 0 ? false : true}
             variant={"destructive"}
+            onClick={() => mutation.mutate()}
           >
             <Trash2 className="w-4 h-4" />
-            Delete user(s)
+            {mutation.isPending ? "Deleting..." : "Delete user(s)"}
           </Button>
         </div>
         <Table>

@@ -8,49 +8,75 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-
-const formSchema = z.object({
-  fullname: z
-    .string()
-    .min(2, { message: "Username must be at least 2 characters!" })
-    .max(50),
-  email: z.string().email({ message: "Invalid email address!" }),
-  phone: z
-    .string()
-    .min(10, { message: "Phone number must be at least 10 characters!" })
-    .max(15),
-  address: z.string().min(5, "Invalid address!").max(100),
-  city: z.string().min(2, "City must be at least 2 characters!").max(100),
-});
+import { UserFormSchema } from "@repo/types";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@clerk/nextjs";
+import { toast } from "react-toastify";
 
 const AddUser = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof UserFormSchema>>({
+    resolver: zodResolver(UserFormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      username: "",
+      emailAddress: [],
+      password: "",
+      confirmPassword: "",
+    },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-  }
+  const { getToken } = useAuth();
+
+  const mutation = useMutation({
+    mutationFn: async (data: z.infer<typeof UserFormSchema>) => {
+      const token = await getToken();
+      const {confirmPassword, ...payload} = data;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_AUTH_SERVICE_URL}/users`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Failed to add user");
+      }
+    },
+    onSuccess: () => {
+      toast.success("User added successfully");
+    },
+    onError: (error) => {
+      toast.error(error?.message || "Something went wrong");
+    },
+  });
+
   return (
     <SheetContent className="px-4">
       <SheetHeader className="px-0">
         <SheetTitle className="mb-4">Add User</SheetTitle>
       </SheetHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
+          className="space-y-4"
+        >
           <FormField
             control={form.control}
-            name={"fullname"}
+            name={"firstName"}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Full name</FormLabel>
+                <FormLabel>First Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -60,10 +86,10 @@ const AddUser = () => {
           ></FormField>
           <FormField
             control={form.control}
-            name={"email"}
+            name={"lastName"}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Last Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -73,10 +99,10 @@ const AddUser = () => {
           ></FormField>
           <FormField
             control={form.control}
-            name={"phone"}
+            name={"username"}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone</FormLabel>
+                <FormLabel>Username</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -86,35 +112,55 @@ const AddUser = () => {
           ></FormField>
           <FormField
             control={form.control}
-            name={"address"}
+            name={"emailAddress"}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Address</FormLabel>
+                <FormLabel>Email Addresses</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input
+                    {...field}
+                    placeholder="email1@gmail.com, email2@gmail.com"
+                    onChange={(e) => {
+                      const emails = e.target.value
+                        .split(",")
+                        .map((email) => email.trim())
+                        .filter((email) => email.length > 0);
+                      field.onChange(emails);
+                    }}
+                  />
                 </FormControl>
-                <FormDescription>
-                  Where the packages will be shipped.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           ></FormField>
           <FormField
             control={form.control}
-            name={"city"}
+            name={"password"}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>City</FormLabel>
+                <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="password"/>
                 </FormControl>
-                <FormDescription>City or postal code.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           ></FormField>
-          <Button type="submit">Submit</Button>
+          <FormField
+            control={form.control}
+            name={"confirmPassword"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input {...field} type="password"/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          ></FormField>
+
+          <Button type="submit" disabled={mutation.isPending} className="disabled:cursor-not-allowed">{mutation.isPending ? "Submitting..." : "Submit"}</Button>
         </form>
       </Form>
     </SheetContent>

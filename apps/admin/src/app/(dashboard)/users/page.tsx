@@ -41,7 +41,6 @@ const getData = async (): Promise<{ data: User[]; totalCount: number; error?: st
 
 const UsersPage = async () => {
   const { data, error } = await getData();
-  console.log("Fetched users:", data);
 
   return (
     <div>

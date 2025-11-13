@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-    const {id} = req.body;
+    const {id} = req.params;
     const user = await clerkClient.users.deleteUser(id);
     res.status(200).json(user);
 });
