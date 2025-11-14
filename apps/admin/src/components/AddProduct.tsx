@@ -149,7 +149,7 @@ const AddProduct = () => {
                 <FormItem>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="number" onChange={e => field.onChange(Number(e.target.value))}/>
                   </FormControl>
                   <FormDescription>
                     Enter the price of the product.
@@ -162,11 +162,11 @@ const AddProduct = () => {
               <FormField
                 control={form.control}
                 name={"categorySlug"}
-                render={() => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>

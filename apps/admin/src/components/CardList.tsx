@@ -68,7 +68,7 @@ const CardList = async ({ title }: { title: string }) => {
                     {item.status}
                   </Badge>
                 </CardContent>
-                <CardFooter className="p-0">{item.amount.toFixed(2)}€</CardFooter>
+                <CardFooter className="p-0">{(item.amount/100).toFixed(2)}€</CardFooter>
               </Card>
             ))}
       </div>

@@ -75,7 +75,7 @@ const OrdersPage = async () => {
                 <p className="text-sm truncate">{order._id}</p>
               </div>
               <div className="w-1/6">
-                <p className="font-semibold">{order.amount.toFixed(2)}€</p>
+                <p className="font-semibold">{(order.amount/100).toFixed(2)}€</p>
               </div>
               <div className="w-1/6">
                 <span className={`text-sm px-3 py-1 rounded inline-block ${

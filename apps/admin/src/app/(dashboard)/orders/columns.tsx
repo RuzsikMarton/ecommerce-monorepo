@@ -90,7 +90,7 @@ export const columns: ColumnDef<OrderType>[] = [
       const formatted = new Intl.NumberFormat("de-DE", {
         style: "currency",
         currency: "EUR",
-      }).format(amount);
+      }).format(amount/100);
 
       return <div className="text-right font-medium">{formatted}</div>;
     },

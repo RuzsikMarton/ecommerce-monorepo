@@ -91,7 +91,7 @@ const Slide = () => {
             onClick={() => setCurrent(index)}
           >
             {current === index && (
-              <div className="w-[6px] h-[6px] rounded-full bg-gray-600"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
             )}
           </div>
         ))}
