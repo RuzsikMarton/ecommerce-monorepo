@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
-import { userAuthMiddleware } from "./middleware/authMiddleware.js";
 import productRouter from "./routes/product.route.js";
 import categoryRouter from "./routes/category.route.js";
 import { consumer, producer } from "./utils/kafka.js";
@@ -24,10 +23,6 @@ app.get("/health", (req: Request, res: Response) => {
     uptime: process.uptime(),
     timestamp: Date.now(),
   });
-});
-
-app.get("/test", userAuthMiddleware, (req: Request, res: Response) => {
-  res.json({ message: "Products service authenticated!", userId: req.userId });
 });
 
 app.use("/products", productRouter);

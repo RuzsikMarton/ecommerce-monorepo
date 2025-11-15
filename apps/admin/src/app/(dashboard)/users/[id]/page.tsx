@@ -64,7 +64,6 @@ const SingleUserPage = async ({
 }) => {
   const { id } = await params;
   const { data, error } = await getData(id);
-  console.log(data);
 
   if (!data) {
     return (
@@ -161,7 +160,7 @@ const SingleUserPage = async ({
                 <SheetTrigger asChild>
                   <Button size="sm">Edit User</Button>
                 </SheetTrigger>
-                <EditUser />
+                <EditUser user={data}/>
               </Sheet>
             </div>
             <div className="mt-4 space-y-2">

@@ -1,10 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 
 const TestPage = async () => {
-    const { getToken } = await auth();
-    const token = await getToken();
-    console.log(token);
-
+  const { getToken } = await auth();
+  const token = await getToken();
+  console.log(token);
+  {
+    /*
     const resProduct = await fetch("http://localhost:8000/test", {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -28,9 +29,9 @@ const TestPage = async () => {
     });
     const dataPayment = await resPayment.json();
     console.log("TEST PAGE Payment DATA:", dataPayment);
-  return (
-    <div>page</div>
-  )
-}
+    */
+  }
+  return <div>Test Page</div>;
+};
 
-export default TestPage
+export default TestPage;
