@@ -55,6 +55,7 @@ const AddUser = () => {
     },
     onSuccess: () => {
       toast.success("User added successfully");
+      form.reset();
     },
     onError: (error) => {
       toast.error(error?.message || "Something went wrong");

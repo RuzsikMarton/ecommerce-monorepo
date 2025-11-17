@@ -80,6 +80,7 @@ const AddProduct = () => {
     },
     onSuccess: () => {
       toast.success("Product added successfully");
+      form.reset();
     },
     onError: (error) => {
       toast.error(error?.message || "Something went wrong");

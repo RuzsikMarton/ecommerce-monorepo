@@ -48,6 +48,7 @@ const AddCategory = () => {
     },
     onSuccess: () => {
       toast.success("Category added successfully");
+       form.reset();
     },
     onError: (error) => {
       toast.error(error?.message || "Something went wrong");

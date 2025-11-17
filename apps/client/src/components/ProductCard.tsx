@@ -37,12 +37,12 @@ const ProductCard = memo(({ product }: { product: ProductType }) => {
     <div className="shadow-lg rounde-lg overflow-hidden">
       {/* Image Section */}
       <Link href={`/products/${product.id}`}>
-        <div className="relative aspect-2/3 hover:scale-105 transition-transform duration-300">
+        <div className="relative aspect-2/3 hover:scale-105 transition-transform duration-300 bg-white">
           <Image
             src={(product.images as Record<string, string>)?.[productTypes.color] || ""}
             alt=""
             fill
-            className="object-cover"
+            className="object-contain"
           />
         </div>
       </Link>
